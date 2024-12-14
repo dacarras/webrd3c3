@@ -1,0 +1,137 @@
+DATA:
+FILE = "scale_001_inv_04.dat";
+ 
+VARIABLE:
+NAMES = id_i id_j id_s ws id_k i01 i02 i03 i05; 
+ MISSING=.;
+  
+STRATIFICATION = id_s;
+CLUSTER        = id_j;
+WEIGHT         = ws;  
+IDVARIABLE     = id_i;
+                      
+
+USEVARIABLES =         
+i01
+i02
+i03
+i05
+;
+
+CATEGORICAL =         
+i01
+i02
+i03
+i05
+;
+GROUPING = id_k (
+11 = CHL
+18 = ENG
+);
+
+ANALYSIS:
+
+TYPE = COMPLEX;
+ESTIMATOR = WLSMV;
+
+MODEL:
+ 
+u01 by i01@1;
+u02 by i02@1;
+u03 by i03@1;
+u05 by i05@1;
+eta BY u01* (l01);
+eta BY u02* (l02);
+eta BY u03* (l03);
+eta BY u05* (l05);
+
+MODEL CHL:
+u01 by i01@1;
+u02 by i02@1;
+u03 by i03@1;
+u05 by i05@1;
+eta BY u01* ;
+eta BY u02* ;
+eta BY u03* ;
+eta BY u05* ;
+[ i01$1*];
+[ i01$2*];
+[ i01$3*];
+[ i02$1*];
+[ i02$2*];
+[ i02$3*];
+[ i03$1*];
+[ i03$2*];
+[ i03$3*];
+[ i05$1*];
+[ i05$2*];
+[ i05$3*];
+{ i01@1 };
+{ i02@1 };
+{ i03@1 };
+{ i05@1 };
+[u01@0];
+[u02@0];
+[u03@0];
+[u05@0];
+u01@0;
+u02@0;
+u03@0;
+u05@0;
+[eta@0];
+eta@1;
+MODEL ENG:
+u01 by i01@1;
+u02 by i02@1;
+u03 by i03@1;
+u05 by i05@1;
+eta BY u01* ;
+eta BY u02* ;
+eta BY u03* ;
+eta BY u05* ;
+[ i01$1*];
+[ i01$2*];
+[ i01$3*];
+[ i02$1*];
+[ i02$2*];
+[ i02$3*];
+[ i03$1*];
+[ i03$2*];
+[ i03$3*];
+[ i05$1*];
+[ i05$2*];
+[ i05$3*];
+{ i01@1 };
+{ i02@1 };
+{ i03@1 };
+{ i05@1 };
+[u01@0];
+[u02@0];
+[u03@0];
+[u05@0];
+u01@0;
+u02@0;
+u03@0;
+u05@0;
+[eta@0];
+eta@1;
+
+OUTPUT:
+
+STANDARDIZED
+SAMPSTAT
+PATTERNS
+CINTERVAL
+RESIDUAL
+SVALUES
+;
+
+SAVEDATA:
+ 
+FILE = scale_001_inv_01_scores.dat;
+SAVE = FSCORES;
+
+PLOT:
+
+TYPE = PLOT2;
+

@@ -1,0 +1,64 @@
+---
+title: "Partial Invariance"
+subtitle: "Guidelines for measurement invariance and aligment methods using `library(rd3c3)`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Partial Invariance}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Partial invariance and Alignment methods
+
+Partially invariant models are model specifications that allows for some item indicators parameters to vary freely, while still having enough common parameters in the response model among groups. These models offer a way to generalize findings based on the invariant parameters while excluding those that exhibit non-invariance (Meredith, 1993; Millsap, 2011). Hence, the name partially invariant.
+
+These models allow researchers to identify group differences or treatment effects reliably for responses to items that remain consistent across groups, while keeping non invariant indicators in the model. For instance, if a treatment effect holds equally for 10 out of 12 items within a scale, assertions between treated and non treated can be made safely for these 10 items, while not making such claims onto the two non-invariant indicators (e.g., Gilbert, 2024).
+
+However, if the number of non-invariant parameters in the response models is too large, then is less credible the ability of making claims that are applicable to all compared groups across all items. As a point reference, Muthén, & Asparouhov (2014) suggest that if .75 of the parameters between groups are held common (while .25 of the response parameters are non-invariant), latent means comparisons between groups are of good enough quality. Yet, such a threshold can be put to the test with Monte Carlo studies, for the speficities of a response model, and the amount of groups being compared (Muhen & Asparouhov, 2014, p3).
+
+There are few caveats to considered regarding partially invariant models when group comparisons are of interest. If non-invariant items are excluded, this selective exclusion can alter the meaning of the total score. Exclusion of non-invariant items can narrow the scope of the attribute of interest. For example, if one has three groups, and twelve items, is possible to have a scenario in which the response model is invariant for two of the three groups. And simultaneously, the measurement equivalence could hold with only four out of the twelve items for the three groups. As such, researchers can have the dilemma of narrowing the amount of indicators at the cost of reliability; and compare the three groups. Or, to do comparison across all the items for only two of the three groups. Yet, with partially invariant model while allows to keep all indicators in the response model, the meaning of the group differences would partially generalize to the responses where the response models are held equal. Restricting the comparison to only the common items among the three groups can restrict the scope of the intended interpretations. This a central problem for cross-cultural studies, where including more diverse groups can augment the chances of non-comparability (Van De Vijver & Matsumoto, 2011). In essence, partially invariant models can pose interpretive challenges. The treatment effects or group differences identified in these models may not fully represent the intended construct's complexity. Researchers must exercise caution in claiming generalizability across indicators, ensuring transparency in reporting the extent of invariance and acknowledging the limitations of their results (Fischer et al., 2019; Van de Schoot et al., 2012).
+
+In practical terms, the process of implementing partially invariant models is time-consuming and often requires significant manual intervention (Svetina et al., 2020; Robitzsch & Lüdtke, 2023). Arranging and adjusting the model to exclude non-invariant items, or to freely estimate response model indicators between partially comparable groups, demands meticulous attention to detail and iterative testing. As a whole, is a procedure which can hinder efficiency. This labor-intensive aspect of the method underscores the need for more streamlined analytical tools or automated procedures to facilitate its application in large-scale studies.
+
+Alignment methods (Muthén & Asparouhov, 2014; Asparouhov & Muthén, 2014; Asparouhov & Muthén, 2022) are a collection of procedures which are helpful in find the least discrepant solution among groups for a given response model. This method searches for an optimal solution where the amount of discrepant (i.e., non-invariant) response model parameters is minimize. Although, is a procedures which helps to searchs partially invariant solutions, the resulting partially invariant solutions are conditional to the selection algorithm (Pokropek, Lüdtke, & Robitzsch, 2020). Thus, is not a method which would yield non debatable partially invariant solutions, but plausible partially invariant solutions. As such, is the researcher who would need to make judgment call regarding if the reach solution is a useful model specification for their purposes, taking into account its limitations.
+
+In conclusion, while partially invariant models offer a practical approach to addressing measurement invariance challenges, their limitations highlight the importance of careful interpretation and methodological rigor. Aligment methods offer an interisting tool to search for partially invariant model specification in cases where strict and scalar invariance is not held. Apart from aligment methods, there are more alternatives that are aim at addressing the challenges of comparing many groups such as bayesian aproximate invariance, measurement invariance via multilevel mdoels, mixture multigroup factor analysis among others (see Leitgöb et al, 2023). Yet, these are out of the scope of the present guidelines
+
+In the following section (section 3), we describe what is the `library(rd3c3)`, and how it can help to fit model based measurement invariance onto graded response models, and how it helps to fit alignment method optimization onto the same response models.
+
+## References
+
+Asparouhov, T., & Muthén, B. (2014). Multiple-group factor analysis alignment. Structural Equation Modeling: A Multidisciplinary Journal, 21(4), 495–508. https://doi.org/10.1080/10705511.2014.919210
+
+Asparouhov, T., & Muthén, B. (2022). Multiple group alignment for exploratory and structural equation models. Structural Equation Modeling: A Multidisciplinary Journal, 1–23. https://doi.org/10.1080/10705511.2022.2127100
+
+Fischer, J., Praetorius, A. K., & Klieme, E. (2019). The impact of linguistic similarity on cross-cultural comparability of students’ perceptions of teaching quality. Educational Assessment, Evaluation and Accountability, 31, 201–220.
+
+Gilbert, J. B. (2024). Modeling item-level heterogeneous treatment effects: A tutorial with the glmer function from the lme4 package in R. Behavior Research Methods, 56(5), 5055–5067. https://doi.org/10.3758/s13428-023-02245-8
+
+Leitgöb, H., Seddig, D., Asparouhov, T., Behr, D., Davidov, E., De Roover, K., Jak, S., Meitinger, K., Menold, N., Muthén, B., Rudnev, M., Schmidt, P., & van de Schoot, R. (2023). Measurement invariance in the social sciences: Historical development, methodological challenges, state of the art, and future perspectives. Social Science Research, 110(October 2022). https://doi.org/10.1016/j.ssresearch.2022.102805
+
+Meredith, W. (1993). Measurement invariance, factor analysis, and factorial invariance. Psychometrika, 58(4), 525–543. https://doi.org/10.1007/BF02294825
+
+Millsap, R. E. (2011). Statistical Approaches to Measurement Invariance. New York, NY: Routledge.
+
+Muthén, B., & Asparouhov, T. (2014). IRT studies of many groups: the alignment method. Supplemental Material. Frontiers in Psychology, 5, 23–31. https://doi.org/10.3389/fpsyg.2014.00978
+
+Pokropek, A., Lüdtke, O., & Robitzsch, A. (2020). An extension of the invariance alignment method for scale linking. Psychological Test and Assessment Modeling, 62(2), 305–334.
+
+Robitzsch, A., & Lüdtke, O. (2023). Why full, partial, or approximate measurement invariance are not a prerequisite for meaningful and valid group comparisons. Structural Equation Modeling, 30(2), 190–204. https://doi.org/10.1080/10705511.2023.2191292
+
+Svetina, D., Rutkowski, L., & Rutkowski, D. (2020). Multiple-group invariance with categorical outcomes using updated guidelines: An illustration using Mplus and the lavaan/semTools packages. Structural Equation Modeling: A Multidisciplinary Journal, 27(1), 111–130. https://doi.org/10.1080/10705511.2019.1602776
+
+Van de Schoot, R., Lugtig, P., & Hox, J. (2012). A checklist for testing measurement invariance. European Journal of Developmental Psychology, 9(4), 486–492. https://doi.org/10.1080/17405629.2012.686740 
+
+Van De Vijver, F.J.R., Matsumoto, D. (2011) Introduction to the methodological issues associated with cross-cultural research. In: Matsumoto, D., van de Vijver, F.J.R. (Eds.), Cross-Cultural Research Methods in Psychology, 1st ed..,. Cambridge University Press, pp. 1–14.
+
+

@@ -1,0 +1,26 @@
+---
+title: "Intended use"
+subtitle: "Guidelines for measurement invariance and aligment methods using `library(rd3c3)`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Intended use}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Intended use
+
+The final section of these guidelines outlines the intended use of the alignment optimization library and emphasizes the responsibilities of the researcher in employing this tool. The primary goal of the library is to streamline and accelerate the process of generating results for multiple groups and item scales. By automating repetitive analytical tasks, the library facilitates the production of key outputs necessary for assessing the fit or misfit of measurement invariance models across various contexts.
+
+However, it is crucial to underscore that the library is not a substitute for sound judgment and expertise of the researcher and user. While it efficiently produces the primary results needed for evaluation, it does not draw definitive conclusions regarding whether models meet specific thresholds or satisfy measurement invariance criteria. This critical interpretive step remains the responsibility of the researcher and the  library user, who must apply their expertise to analyze and contextualize the findings appropriately.
+
+The library is specifically designed to assist users in generating foundational results for evaluating measurement invariance. It is not intended for purposes outside this scope. It should not be used to automate decision-making regarding the acceptability or applicability of response models. Users must approach the outputs with caution, ensuring that the analyses are tailored to the specific goals of their research and the nuances of their studies.
+
+In conclusion, this library is a powerful tool to enhance efficiency in measurement invariance analyses, but it is not a substitute for thorough methodological understanding and critical interpretation. Researchers are encouraged to use this resource judiciously and within its intended purpose, recognizing its limitations and their own role in ensuring the validity and reliability of their conclusions.

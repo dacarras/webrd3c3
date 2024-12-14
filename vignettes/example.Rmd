@@ -1,0 +1,458 @@
+---
+title: "Applied examples"
+subtitle: "Guidelines for measurement invariance and aligment methods using `library(rd3c3)`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Applied examples}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Examples
+
+## Summary
+
+- We use data from TIMSS 2019, from the student background questionnaire.
+  + In particular we are using student responses to the items of the scale "Sense of School Belonging", from Chile and England.
+  + The data file includes 4115 students from Chile, and 3365 students from England, from 8th grade
+  + We are using a taylored made data file, where we include specific clustering and survey design variables:
+    + id_i = unique id number for students
+    + id_j = unique id number for schools 
+    + id_s = unique id number for stratification factors (i.e., JKZONES)
+    + id_k = unique id number for country samples
+    + ws = scale survey weights to a constant of 1000
+    + [`data_ex1.rds`](https://www.dropbox.com/scl/fi/aivrd2rw2lhw5o7ly06jn/data_ex1.rds?rlkey=3clglj3fdlh5o6myv3q8et9xz&dl=1)
+
+- To install the library, a user can use the following code, to download the development version of the library:
+
+```{r, echo = TRUE, eval = FALSE, warning=FALSE, message = FALSE}
+#| code-fold: FALSE
+
+# -----------------------------------------------
+# install rd3c3
+# -----------------------------------------------
+
+devtools::install_github(
+  'dacarras/rd3c3',
+  force = TRUE
+)
+
+```
+
+- We include three applied examples:
+  + Invariance Analysis
+    + Model based invariance analysis
+    + Alignment method analsyis
+  + Item report analysis
+    + The item report analysis includes a larger set of analysis, besides Model based invariance analysis and Alignment method analsyis, such as item descriptives, missing data analysis, parallel analysis and reliability analysis among others.
+
+## Invariance analysis
+
+### Model based invariance analysis
+
+Model based invariance analysis includes five model specifications:
+
+- **pooled** is a graded response model with probit link, including survey design variables (i.e., stratification factors, primary sampling unit and student survey weights) (e.g., Stapleton, 2013). Is a single response model, fitted onto pooled sample of cases, were sampling weights have been scale to a common constant so including countries contributes equally to estimates (Gonzalez, 2012).
+
+- **strict** is a multigroup graded response model, where all response model parameters are held equal between compared groups (Tse et al., 2024), including the scale factors.
+
+- **scalar** is a multigroup graded response model, where all response model parameters are held equal among groups, with the exemption of scale factors. It follows model specifications described in Svetina et al. (2020, proposition 7).
+
+- **configural** is a multigroup graded response model, where thresholds are held common among the compared countries (i.e., threshold invariance). Is the baseline model for a model building sequence for assesing model based measurement invariance (Wu & Estabrook, 2016). It follows model specifications described in Svetina et al. (2020, proposition 4).
+
+- **base** is a a multigroup graded response model, where all response model parameters are freely estimated among the compare groups.
+
+Simulations studies from Rutkowski & Svetina (2017) with the graded response model with probit link and a larger amount of compare groups (e.g., 10, 20) suggest that RMSEA < .055 serves as a rule of thumb to select well fitting response models with invariant parameters among the compare groups.
+
+To fit the following models we use as inputs:
+
+- data_responses [`data_ex1.rds`](https://www.dropbox.com/scl/fi/aivrd2rw2lhw5o7ly06jn/data_ex1.rds?rlkey=3clglj3fdlh5o6myv3q8et9xz&dl=1)
+- scale_info = [`guideline_scale_info_example.xlsx`](https://www.dropbox.com/scl/fi/ey0z7zpdyhuxcutedyz73/guideline_scale_info_example.xlsx?rlkey=75hh3l7o56vb0njo3eurxxhzm&dl=1)
+- scale_id = 1
+- and is using the functions:
+  + `rd3c3::fit_grm2` for the pooled model
+  + `rd3c3::fit_grm2_m01_strict` for the strict model
+  + `rd3c3::fit_grm2_m02_scalar` for the scalar model
+  + `rd3c3::fit_grm2_m03_configural` for the configural model
+  + `rd3c3::fit_grm2_m04_base` for the base model (i.e., descriptive model)
+
+
+In the following section we include code (*folded*) to produce the invariance model fit indexes table (see Table 1).
+
+```{r, echo = TRUE, eval = TRUE, warning=FALSE, message = FALSE}
+#| code-fold: true
+
+#------------------------------------------------------------------------------
+# define objects
+#------------------------------------------------------------------------------
+
+# -----------------------------------------------
+# scale id
+# -----------------------------------------------
+
+rd3c3::silent(library(dplyr))
+
+# -----------------------------------------------
+# scale id
+# -----------------------------------------------
+
+scale_id <- 1
+
+# -----------------------------------------------
+# scales info
+# -----------------------------------------------
+
+scales_data <- readxl::read_xlsx(
+               'guideline_scale_info_example.xlsx', 
+               sheet = 'scales_data'
+               )
+
+# -----------------------------------------------
+# data file
+# -----------------------------------------------
+
+data_file <- scales_data %>%
+dplyr::filter(scale_num == scale_id) %>%
+dplyr::select(data_file) %>%
+unique() %>%
+dplyr::pull() 
+
+# -----------------------------------------------
+# response matrix
+# -----------------------------------------------
+
+data_responses <- readRDS(data_file) %>%
+mutate(grp = paste0(COUNTRY)) %>%
+mutate(grp = as.numeric(as.factor(COUNTRY))) %>%
+mutate(grp_name = paste0(COUNTRY))
+
+#------------------------------------------------------------------------------
+# response models
+#------------------------------------------------------------------------------
+
+# -----------------------------------------------
+# most centered
+# -----------------------------------------------
+
+grp_centered <- 'CHL'
+
+# -----------------------------------------------
+# pooled
+# -----------------------------------------------
+
+inv_0 <- rd3c3::silent(
+             rd3c3::fit_grm2(
+           data = data_responses,
+           scale_num  = scale_id,
+             scale_info = scales_data
+              )
+             )
+
+# -----------------------------------------------
+# strict
+# -----------------------------------------------
+
+inv_1 <- rd3c3::silent(
+           rd3c3::fit_grm2_m01_strict(
+           data = data_responses, 
+           scale_num = scale_id, 
+           scale_info = scales_data,
+           grp_var = 'id_k',
+           grp_txt = 'grp_name',
+           grp_ref = grp_centered
+           )
+           )
+
+# -----------------------------------------------
+# scalar
+# -----------------------------------------------
+
+inv_2 <- rd3c3::silent(
+           rd3c3::fit_grm2_m02_scalar(
+           data = data_responses, 
+           scale_num = scale_id, 
+           scale_info = scales_data,
+           grp_var = 'id_k',
+           grp_txt = 'grp_name',
+           grp_ref = grp_centered
+           )
+           )
+
+# -----------------------------------------------
+# configural
+# -----------------------------------------------
+
+inv_3 <- rd3c3::silent(
+           rd3c3::fit_grm2_m03_config(
+           data = data_responses, 
+           scale_num = scale_id, 
+           scale_info = scales_data,
+           grp_var = 'id_k',
+           grp_txt = 'grp_name',
+           grp_ref = grp_centered
+           )
+           )
+
+# -----------------------------------------------
+# base
+# -----------------------------------------------
+
+inv_4 <- rd3c3::silent(
+           rd3c3::fit_grm2_m04_base(
+           data = data_responses, 
+           scale_num = scale_id, 
+           scale_info = scales_data,
+           grp_var = 'id_k',
+           grp_txt = 'grp_name',
+           grp_ref = grp_centered
+           )
+           )
+
+# -----------------------------------------------
+# retrieve fit indexes per model
+# -----------------------------------------------
+
+fit_0 <- rd3c3::get_inv_fit(inv_0, model_name = 'pooled')
+fit_1 <- rd3c3::get_inv_fit(inv_1, model_name = 'strict')
+fit_2 <- rd3c3::get_inv_fit(inv_2, model_name = 'scalar')
+fit_3 <- rd3c3::get_inv_fit(inv_3, model_name = 'config')
+fit_4 <- rd3c3::get_inv_fit(inv_4, model_name = 'base')
+
+# -----------------------------------------------
+# general table
+# -----------------------------------------------
+
+fit_table <- dplyr::bind_rows(
+             dplyr::select(fit_0, model, RMSEA, CFI, TLI, SRMR, x2, df, p_val),
+             dplyr::select(fit_1, model, RMSEA, CFI, TLI, SRMR, x2, df, p_val),
+             dplyr::select(fit_2, model, RMSEA, CFI, TLI, SRMR, x2, df, p_val),
+             dplyr::select(fit_3, model, RMSEA, CFI, TLI, SRMR, x2, df, p_val),
+             dplyr::select(fit_4, model, RMSEA, CFI, TLI, SRMR, x2, df, p_val)
+             )
+
+
+# -----------------------------------------------
+# model fit
+# -----------------------------------------------
+
+fit_table %>%
+knitr::kable(., 
+  digits = c(0,3,2,2,2,2,0,2),
+    caption = 'Table 1: invariance model fit indexes between compared groups'
+  )
+
+```
+
+>Note: pooled = is the response model fitted onto the pooled sample. strict = is a multigroup response model with common thresholds, common loadings, and a common scale. This response model suffice mean score comparisons (Tse et al., 2024). scalar = is a multigroup esponse model with common thresholds, common loadings, and free scales for each item. This models supports latent mean comparisons (Tse et al., 2024). config = is a multigroup response model with common thresholds. base = is a multigroup descriptive model where all response model parameter are free to vary. Metric model specification is not identified under graded response models (Wu & Estabrook, 2016), thus metric solution is not included. A RMSEA of .055 or less has been found to be good threshold for fit for graded response models with many groups of 10 or 20 compared groups (see Rutkowski & Svetina, 2017).
+
+### Alignment
+
+The aligment method is optimizing for the least discrepance response model parameters among the compared groups. Is fitting a graded response model with probit link, and using the most optimal group as a reference. We are using the statement `ALIGNMENT = FIXED(*);` within Mplus for these purposes. We rely on the *Measurement invariance explorer* (https://github.com/MaksimRudnev/MIE.package) to retrieve aligment results.
+
+The following code (*folded*) is using as inputs:
+
+- data_responses [`data_ex1.rds`](https://www.dropbox.com/scl/fi/aivrd2rw2lhw5o7ly06jn/data_ex1.rds?rlkey=3clglj3fdlh5o6myv3q8et9xz&dl=1)
+- scale_info = [`guideline_scale_info_example.xlsx`](https://www.dropbox.com/scl/fi/ey0z7zpdyhuxcutedyz73/guideline_scale_info_example.xlsx?rlkey=75hh3l7o56vb0njo3eurxxhzm&dl=1)
+- scale_id = 1
+- and is using the function `rd3c3::fit_grm2_align_wlsmv()` to run an alignment method analysis
+
+
+```{r, echo = TRUE, eval = TRUE, warning=FALSE, message = FALSE}
+#| code-fold: true
+
+#------------------------------------------------------------------------------
+# define objects
+#------------------------------------------------------------------------------
+
+# -----------------------------------------------
+# scale id
+# -----------------------------------------------
+
+rd3c3::silent(library(dplyr))
+
+# -----------------------------------------------
+# scale id
+# -----------------------------------------------
+
+scale_id <- 1
+
+# -----------------------------------------------
+# scales info
+# -----------------------------------------------
+
+scales_data <- readxl::read_xlsx(
+               'guideline_scale_info_example.xlsx', 
+               sheet = 'scales_data'
+               )
+
+# -----------------------------------------------
+# data file
+# -----------------------------------------------
+
+data_file <- scales_data %>%
+dplyr::filter(scale_num == scale_id) %>%
+dplyr::select(data_file) %>%
+unique() %>%
+dplyr::pull() 
+
+# -----------------------------------------------
+# response matrix
+# -----------------------------------------------
+
+data_responses <- readRDS(data_file) %>%
+mutate(grp = paste0(COUNTRY)) %>%
+mutate(grp = as.numeric(as.factor(COUNTRY))) %>%
+mutate(grp_name = paste0(COUNTRY))
+
+#------------------------------------------------------------------------------
+# alignment
+#------------------------------------------------------------------------------
+
+# -----------------------------------------------
+# aligned
+# -----------------------------------------------
+
+
+fitted_align <- rd3c3::silent(
+rd3c3::fit_grm2_align_wlsmv(
+data = data_responses, 
+scale_num = scale_id, 
+scale_info = scales_data)
+)
+
+# -----------------------------------------------
+# retrieve output
+# -----------------------------------------------
+
+scale_file <- scales_data %>%
+dplyr::filter(scale_num == scale_id) %>%
+dplyr::select(mplus_file) %>%
+unique() %>%
+dplyr::pull() 
+
+
+alignment_out <- MIE::extractAlignment(paste0(scale_file,'_align.out'), silent = TRUE)
+
+# -----------------------------------------------
+# display
+# -----------------------------------------------
+
+alignment_table <- alignment_out$summary %>%
+                   tibble::rownames_to_column("terms") %>%
+                   tibble::as_tibble() %>%
+                   rename(
+                   term        = 1,
+                   a_par       = 2,
+                   R2          = 3,
+                   n_inv       = 4,
+                   n_dis       = 5,
+                   inv_grp     = 6,
+                   dis_grp     = 7
+                   ) %>%
+                   mutate(type = case_when(
+                   stringr::str_detect(term, 'Threshold') ~ 'tau',
+                   stringr::str_detect(term, 'Loadings')  ~ 'lambda'
+                   )) %>%              
+                   mutate(term = stringr::str_replace(term, '\\$', '_')) %>%
+                   mutate(term = stringr::str_replace(term, 'Threshold', '')) %>%
+                   mutate(term = stringr::str_replace(term, 'Loadings', '')) %>%
+                   mutate(term = stringr::str_replace(term, 'ETA by ', '')) %>%
+                   dplyr::select(
+                   type, term, a_par, R2, n_inv, n_dis, inv_grp, dis_grp)
+
+# -----------------------------------------------
+# display
+# -----------------------------------------------
+
+alignment_table %>%
+knitr::kable(., 
+  digits = 2,
+    caption = 'Table 2: alignment comparisons'
+)
+
+```
+
+## Item report analysis
+
+In the following section we include a **template** example, to produce **item analysis reports**. This template includes:
+
+- **Scale description**
+  - a presentation of the name of the collection of items (i.e., the scale name)
+  - a presentation of items as these where presented to the participants
+  - a table with the item text, with the public data file names, and the shortened variable names
+- **Analysis of responses**
+  - descriptives
+  - missing data descriptives
+- **Response model**
+  - dimensionality analysis via parallel analysis for ordinal indicators (Lubbe, 2019)
+  - response model parameters for a graded response model
+  - reliability analysis
+  - item person maps
+- **Item analysis**
+  - item test correlation
+  - item fit based on partial credit model
+- **Comparability**
+  - model based measurement invariance
+  - alignment analysis of GRM among groups
+
+The following figure depicts an overview of the generated report.
+
+```{r echo = FALSE, out.width = '100%', fig.retina = 2, fig.cap = 'Figure 5: overview of a dynamic item report'}
+
+# -----------------------------------------------
+# instrument
+# -----------------------------------------------
+
+knitr::include_graphics(paste0('figure_5_overview.png'))
+
+```
+
+To produce this examplary report the user needs as inputs:
+
+- data_responses [`data_ex1.rds`](https://www.dropbox.com/scl/fi/aivrd2rw2lhw5o7ly06jn/data_ex1.rds?rlkey=3clglj3fdlh5o6myv3q8et9xz&dl=1)
+- scale_info = [`guideline_scale_info_example.xlsx`](https://www.dropbox.com/scl/fi/ey0z7zpdyhuxcutedyz73/guideline_scale_info_example.xlsx?rlkey=75hh3l7o56vb0njo3eurxxhzm&dl=1)
+- scale_id = 1
+- the template [`guideline_item_report_example.rmd`](https://www.dropbox.com/scl/fi/nagxx42dcq53rp6dtxex3/guideline_item_report_example.rmd?rlkey=576jslusp6o42pq3105lr789a&dl=1)
+  + and the word template [`report_template.docx`](https://www.dropbox.com/scl/fi/jiixz2dvju0vogva5wlla/report_template.docx?rlkey=1tqqfzbdqwdfy505ms5u5r7w5&dl=1)
+
+The end product of this procedure can be inspected in the following file [`guideline_item_report_example.docx`](https://www.dropbox.com/scl/fi/cin16b5eq1qxmdiei559o/guideline_item_report_example.docx?rlkey=micaggo6k39n2dmuw3ceuar8w&dl=1)
+
+## Additional examples
+
+The current examples are just toy examples, to illustrate the basic capabilities of the library. We include two other with more realistic characteristics. One example with three countries, were is possible to see that three countries do not obtained strict invariance (example with "Sense of School Belonging" for three countries). And a third example of a template based workflow, where we procede with a full fledge item analysis report including all participating countries (example with "Bullying Scale" for all participating countries).
+
+- Example with "Sense of School Belonging" for three countries
+  + data: [`data_example.rds`](https://www.dropbox.com/scl/fi/m7s8qb1k618bihu5jmcou/data_example.rds?rlkey=mo9iylrj1td0hjsqlq0zcemv9&dl=1)
+  + code template: [`template_example_2.rmd`](https://www.dropbox.com/scl/fi/o3z2y6epp7s200p0f5mel/template_example_2.rmd?rlkey=7xc311qpjr3plb4gpmbzbn5zo&dl=1)
+    + word template: [`report_template.docx`](https://www.dropbox.com/scl/fi/jiixz2dvju0vogva5wlla/report_template.docx?rlkey=1tqqfzbdqwdfy505ms5u5r7w5&dl=1)
+  + resulting report: [`template_example_2.docx`](https://www.dropbox.com/scl/fi/h5yq3xwmmmerfw85sb1wn/template_example_2.docx?rlkey=2dutcmiwlknt4pqs27oxtnhtw&dl=1)
+
+
+- Example with "Bullying Scale" for all participating countries
+  + data[`survey_1_g8.rds`](https://www.dropbox.com/scl/fi/xmqoem0k87ppmk7sh59r6/survey_1_g8.rds?rlkey=n0pbk17ro6ct725hk9759892w&dl=1)
+  + code template: [`template_example_3.rmd`](https://www.dropbox.com/scl/fi/xy1wdeyzzwy5t96c56ttp/template_example_3.rmd?rlkey=y5h1usj85hjyo8aydh0hp483t&dl=1)
+    + word template: [`report_template.docx`](https://www.dropbox.com/scl/fi/jiixz2dvju0vogva5wlla/report_template.docx?rlkey=1tqqfzbdqwdfy505ms5u5r7w5&dl=1)
+  + resulting report [`template_example_3.docx`](https://www.dropbox.com/scl/fi/aa6ixsa7f0sb8w8fzd6lc/template_example_3.docx?rlkey=t3x1a2lobtwjdj5irn0p6of2i&dl=1).
+
+All example files can be downladed from the following [link](https://www.dropbox.com/scl/fo/fn6a4qdptrhqls8ew2znx/ALsg5EGe863ZRIOqpkx585M?rlkey=51o0ile0w8o679qjwgl42a7cr&dl=1).
+
+## References
+
+Gonzalez, E. J. (2012). Rescaling sampling weights and selecting mini-samples from large-scale assessment databases. IERI Monograph Series Issues and Methodologies in Large-Scale Assessments, 5, 115–134.
+
+Tse, W. W. Y., Lai, M. H. C., & Zhang, Y. (2024). Does strict invariance matter? Valid group mean comparisons with ordered-categorical items. Behavior Research Methods, 56(4), 3117–3139. https://doi.org/10.3758/s13428-023-02247-6
+
+Stapleton, L. M. (2013). Incorporating Sampling Weights into Single- and Multilevel Analyses. In L. Rutkowski, M. von Davier, & D. Rutkowski (Eds.), Handbook of International Large scale Assessment: background, technical issues, and methods of data analysis (pp. 363–388). Chapman and Hall/CRC.
+
+Svetina, D., Rutkowski, L., & Rutkowski, D. (2020). Multiple-Group Invariance with Categorical Outcomes Using Updated Guidelines: An Illustration Using Mplus and the lavaan/semTools Packages. Structural Equation Modeling: A Multidisciplinary Journal, 27(1), 111–130. https://doi.org/10.1080/10705511.2019.1602776
+
+Wu, M., Tam, H. P., & Jen, T.-H. (2016). Educational Measurement for Applied Researchers. Springer Singapore. https://doi.org/10.1007/978-981-10-3302-5
+
+Rutkowski, L., & Svetina, D. (2017). Measurement Invariance in International Surveys: Categorical Indicators and Fit Measure Performance. Applied Measurement in Education, 30(1). https://doi.org/10.1080/08957347.2016.1243540

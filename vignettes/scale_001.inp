@@ -1,0 +1,62 @@
+DATA:
+FILE = "scale_001.dat";
+ 
+VARIABLE:
+NAMES = id_i id_j id_s ws i01 i02 i03 i05; 
+ MISSING=.;
+  
+STRATIFICATION = id_s;
+CLUSTER        = id_j;
+WEIGHT         = ws;  
+IDVARIABLE     = id_i;
+                      
+
+USEVARIABLES =         
+i01
+i02
+i03
+i05
+;
+
+CATEGORICAL =         
+i01
+i02
+i03
+i05
+;
+
+ANALYSIS:
+
+TYPE = COMPLEX;
+ESTIMATOR = WLSMV;
+
+MODEL:
+ 
+[eta@0];
+eta@1;
+
+eta by i01*;
+eta by i02*;
+eta by i03*;
+eta by i05*;
+
+OUTPUT:
+
+STANDARDIZED
+SAMPSTAT
+PATTERNS
+CINTERVAL
+RESIDUAL
+SVALUES
+;
+
+SAVEDATA:
+ 
+FILE = scale_001_scores.dat;
+SAVE = FSCORES;
+H5RESULTS = scale_001_results.H5;
+
+PLOT:
+
+TYPE = PLOT2;
+
