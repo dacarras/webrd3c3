@@ -81,7 +81,7 @@ x <- data_selected
 library(dplyr)
 items_table <- x %>% as.data.frame()
 
-table_1 <- r4sda::get_desc(items_table)
+table_1 <- get_desc(items_table)
 
 table_2 <- items_table %>%
            CTT::itemAnalysis(.) %>%

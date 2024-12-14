@@ -82,20 +82,13 @@ options(warn=-1)
 
   # requires
   library(dplyr)
-  library(r4sda)
   library(skimr)
   library(tidyr)
   library(stats)
 
-remove_labels <- function(data){
-require(haven)
-require(labelled)
-require(sjlabelled)
-data <- data %>%
-          haven::zap_label() %>%
-          labelled::remove_labels() %>%
-          sjlabelled::remove_all_labels()
-  return(data)
+remove_labels <- function(x){
+data <- dplyr::mutate(x, across(everything(), as.vector))
+return(data)
 }
 
   # histograms

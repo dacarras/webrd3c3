@@ -16,7 +16,6 @@ get_desc <- function(x){
 
   # requires
   library(dplyr)
-  library(r4sda)
   library(skimr)
   library(tidyr)
   library(stats)
