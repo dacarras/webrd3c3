@@ -29,5 +29,6 @@ Suggests:
     dplyr,
     knitr,
     readxl,
-    rmarkdown
+    rmarkdown,
+    stringr
 VignetteBuilder: knitr
