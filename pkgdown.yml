@@ -2,8 +2,9 @@ pandoc: 3.1.11
 pkgdown: 2.1.1
 pkgdown_sha: ~
 articles:
+  grm: grm.html
   intro: intro.html
-last_built: 2024-12-14T06:02Z
+last_built: 2024-12-14T06:10Z
 urls:
   reference: https://dacarras.github.io/webrd3c3/reference
   article: https://dacarras.github.io/webrd3c3/articles
