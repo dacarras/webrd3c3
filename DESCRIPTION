@@ -28,6 +28,7 @@ BugReports: https://github.com/dacarras/webrd3c3/issues
 Suggests: 
     dplyr,
     knitr,
+    MplusAutomation,
     readxl,
     rmarkdown,
     stringr
