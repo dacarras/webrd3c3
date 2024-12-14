@@ -3,7 +3,7 @@ title: "Introduction"
 subtitle: "Guidelines for measurement invariance and aligment methods using `library(rd3c3)`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{intro}
+  %\VignetteIndexEntry{Introduction}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
