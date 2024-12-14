@@ -1,0 +1,61 @@
+DATA:
+FILE = "scale_001_align.dat";
+ 
+VARIABLE:
+NAMES = id_k id_i id_j id_s ws i01 i02 i03 i05; 
+ MISSING=.;
+  
+STRATIFICATION = id_s;
+CLUSTER        = id_j;
+WEIGHT         = ws;  
+IDVARIABLE     = id_i;
+                      
+
+USEVARIABLES =         
+i01
+i02
+i03
+i05
+;
+
+CATEGORICAL =         
+i01
+i02
+i03
+i05
+;
+
+GROUPING = id_k (              
+
+11 = 1 !CHL
+18 = 2 !ENG
+
+);
+
+ANALYSIS:
+
+TYPE = COMPLEX;
+ESTIMATOR = WLSMV;
+ALIGNMENT = FIXED(*);
+PROCESSORS = 4;
+
+MODEL:
+ eta by i01;
+eta by i02;
+eta by i03;
+eta by i05;
+
+OUTPUT:
+
+STANDARDIZED
+CINTERVAL
+TECH8
+ALIGN
+SVALUES
+;
+
+SAVEDATA:
+ 
+RANKINGS = scale_001_align_ranking.dat;
+H5RESULTS = scale_001_align_results.H5;
+
