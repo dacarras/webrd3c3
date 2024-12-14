@@ -13,8 +13,7 @@
 #' @export
 reverse <- function(var){
 # remove labels
-var <- labelled::remove_labels(var)
-var <- haven::zap_labels(var)
+var <- remove_labels(var)
 
 # get max and min of vector
 max <- max(var, na.rm = TRUE)
