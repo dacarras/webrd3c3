@@ -23,5 +23,5 @@ License: CC BY 4.0
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.1
-URL: https://github.com/dacarras/webrd3c3
+URL: https://github.com/dacarras/webrd3c3, https://dacarras.github.io/webrd3c3/
 BugReports: https://github.com/dacarras/webrd3c3/issues
