@@ -86,7 +86,7 @@ To fit the following models we use as inputs:
 
 In the following section we include code (*folded*) to produce the invariance model fit indexes table (see Table 1).
 
-```{r, echo = TRUE, eval = TRUE, warning=FALSE, message = FALSE}
+```{r eval=TRUE, echo=TRUE, message=FALSE, warning=FALSE}
 #| code-fold: true
 
 #------------------------------------------------------------------------------
