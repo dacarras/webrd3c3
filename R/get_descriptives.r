@@ -68,7 +68,7 @@ items_data <- data_model %>%
               rename_at(vars(pre_names), ~paste0(new_names)) %>%
               mutate_at(
               	.vars = reverse_items,
-              	.funs = ~r4sda::reverse(.)) %>%
+              	.funs = ~reverse(.)) %>%
               dplyr::select(one_of(item_names))
 
 data_selected <- variables_data
@@ -282,7 +282,7 @@ data <- data %>%
   # kurtosis
   get_kurt <- function(x){
     wide_table <- x %>%
-      r4sda::remove_labels() %>%
+      remove_labels() %>%
       summarise_all(list(
         kurt = ~moments::kurtosis(., na.rm = TRUE)
       ))
