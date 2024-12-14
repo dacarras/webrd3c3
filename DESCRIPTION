@@ -1,0 +1,25 @@
+Package: webrd3c3
+Title: A package for running invariance analysis via lists
+Version: 0.0.0.1
+Authors@R: c(
+    person(given = "Diego",
+           family = "Carrasco",
+           role = c("aut", "cre"),
+           email = "dacarras@gmail.com",
+           comment = c(ORCID = "0000-0002-1195-6206")),
+    person(given = "Nurullah",
+           family = "Eryilmaz",
+           role = c("aut"),
+           email = "nurullah.eryilmaz@iea-hamburg.de",
+           comment = c(ORCID = "0000-0003-1916-8295")),
+    person(given = "Andrés",
+           family = "Sandoval-Hernández",
+           role = c("aut"),
+           email = "a.sandoval@bath.ac.uk",
+           comment = c(ORCID = "0000-0002-4106-062X"))
+           )
+Description: Sets of wrapper functions to fit model based invariance and alignment analysis with probit graded response models.
+License: CC BY 4.0
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.1
