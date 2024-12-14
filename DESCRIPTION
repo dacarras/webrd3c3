@@ -28,5 +28,6 @@ BugReports: https://github.com/dacarras/webrd3c3/issues
 Suggests: 
     dplyr,
     knitr,
+    readxl,
     rmarkdown
 VignetteBuilder: knitr
