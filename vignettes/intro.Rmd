@@ -1,0 +1,58 @@
+---
+title: "Introduction"
+subtitle: "Guidelines for measurement invariance and aligment methods using `library(rd3c3)`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{intro}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Introduction
+
+Invariance is a desired property of total scores generated with polytomous items, to allows comparisons among collections of observations on those total scores (Tse, Lai, & Chang, 2024). These collections of observations include meaningful factors such as sex, age, the language of the test or survey, and the participating country, among different groups of interest. Ideally, response models are used to provide evidence (or the lack of it) that comparisons among these groups can be made on the same scale when total scores are used.
+
+There are different approaches to assess if the assume comparability is tenable. The most popular approaches include differential item functioning (DIF), and factorial invariance (Thissen, 2024). The most simple version of differential item functioning (uniform DIF), consist of the study of item location parameters conditional to group membership of the observations. DIF is a procedure to produce evidence that the expected response onto items, is similar among groups if the level of the attribute is similar between groups, or not. Thus, if two (or more) groups of the same attribute level do differ on the expected responses to an item, this scenario is taken as evidence of DIF (e.g., Wu et al, 2016) . Factorial invariance or measurement invariance, is a model based strategy, where different response models are fitted onto the groups of interest, to assess the equivalence of the response model besides groups latent mean differences. As such, comparisons of interest among groups includes not only location item paratemers, but also factor loadings, and residuals or item uniqueness (Kline, 2023). Traditionally, a descriptive model is specified (i.e. configural model), and a sequence of more constrained models are fitted, where different model parameters are held equal among groups till the most equivalent model specification is fitted where factor loadings (metric invariance), item location (scalar invariance) and item uniques parameters are held equal, and only latent mean differences are allow to vary (strict invariance) (e.g., Dimitrov, 2010).
+
+Within this later approach there are current development that deviate from the common practice of confirmatory factor alysis (CFA) for continous indicators, specially recommended for confirmatory factor analysis fitted onto ordinal indicators (e.g., Wu & Estabrook, 2016; Svetina, Rutkowski & Rutkowski, 2020; Tse, Lai & Chang, 2024). Two points of contention are of special relevance for the present guideline. These are the order in which the different model specifications should fitted; and if the different invariance model specifications describe for CFA with continous indicators are identified for response models with ordinal indicators.
+
+The present guidelines are focus on how to produce different response model specifications, using the `library(rd3c3)` in R. This is an R library, with a collection of different wrapper functions that helps to speed up the process of fitting different model specifications (i.e., strict, scalar, configural) onto large scale assessment studies. `library(rd3c3)` follows the work of Wu & Estabrook (2016) on model identification, and starts first with item threshold invariance as the first step to build the model sequence of measurent invariance. An follows the Svetina et al (2020) and Tse et al (2024) on model specification to produce scalar, and strict invariance model specifications.
+
+Additionally, `library(rd3c3)` provides wrapper functions to fit alignment methods. These are invariance model specification that relaxes the models parameter constrains among groups in search of the least discrepant model estimates across the compared groups (Muthén & Asparouhov, 2014).
+
+The following guideline is structure as follows: we first review measurement invariance within the propose response model, the graded response model (section 1); we then proceed to discuss the limitations of partially invariant models (section 2); we described the library in general terms (section 3); we provide a full example of invariance analysis (section 4); and finally we close the present guidelines with a section of intended uses (section 5).
+
+
+# References
+
+Dimitrov, D. M. (2010). Testing for Factorial Invariance in the Context of Construct Validation. Measurement and Evaluation in Counseling and Development, 43, 121–149. https://doi.org/10.1177/0748175610373459
+
+Kline, R. B. (2023). Principles and Practice of Structural Equation Modeling (5th ed.). Guilford Press.
+
+Muthén, B., & Asparouhov, T. (2014). IRT studies of many groups: the alignment method. Supplemental Material. Frontiers in Psychology, 5, 23–31. https://doi.org/10.3389/fpsyg.2014.00978
+
+Svetina, D., Rutkowski, L., & Rutkowski, D. (2020). Multiple-Group Invariance with Categorical Outcomes Using Updated Guidelines: An Illustration Using Mplus and the lavaan/semTools Packages. Structural Equation Modeling: A Multidisciplinary Journal, 27(1), 111–130. https://doi.org/10.1080/10705511.2019.1602776
+
+Thissen, D. (2024). A Review of Some of the History of Factorial Invariance and Differential Item Functioning. Multivariate Behavioral Research, 0(0), 1–25. https://doi.org/10.1080/00273171.2024.2396148
+
+Tse, W. W. Y., Lai, M. H. C., & Zhang, Y. (2024). Does strict invariance matter? Valid group mean comparisons with ordered-categorical items. Behavior Research Methods, 56(4), 3117–3139. https://doi.org/10.3758/s13428-023-02247-6
+
+Wang, J., & Wang, X. (2020). Confirmatory Factor Analysis. In Structural Equation Modeling: Applications Using Mplus (pp. 33–117). John Wiley & Sons, Inc. https://doi.org/10.4324/9781315832746-25
+
+Wu, H., & Estabrook, R. (2016). Identification of Confirmatory Factor Analysis Models of Different Levels of Invariance for Ordered Categorical Outcomes. Psychometrika, 81(4), 1014–1045. https://doi.org/10.1007/s11336-016-9506-0
+
+Wu, M., Tam, H. P., & Jen, T.-H. (2016). Educational Measurement for Applied Researchers. Springer Singapore. https://doi.org/10.1007/978-981-10-3302-5
+
+
+
+
+
+
+
