@@ -1,6 +1,6 @@
 ---
 title: "Applied examples"
-subtitle: "Guidelines for measurement invariance and aligment methods using `library(rd3c3)`"
+subtitle: "Guidelines for measurement invariance and aligment methods using `library(webrd3c3)`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Applied examples}
@@ -36,11 +36,11 @@ knitr::opts_chunk$set(
 #| code-fold: FALSE
 
 # -----------------------------------------------
-# install rd3c3
+# install webrd3c3
 # -----------------------------------------------
 
 devtools::install_github(
-  'dacarras/rd3c3',
+  'dacarras/webwebrd3c3',
   force = TRUE
 )
 
@@ -77,11 +77,11 @@ To fit the following models we use as inputs:
 - scale_info = [`guideline_scale_info_example.xlsx`](https://www.dropbox.com/scl/fi/ey0z7zpdyhuxcutedyz73/guideline_scale_info_example.xlsx?rlkey=75hh3l7o56vb0njo3eurxxhzm&dl=1)
 - scale_id = 1
 - and is using the functions:
-  + `rd3c3::fit_grm2` for the pooled model
-  + `rd3c3::fit_grm2_m01_strict` for the strict model
-  + `rd3c3::fit_grm2_m02_scalar` for the scalar model
-  + `rd3c3::fit_grm2_m03_configural` for the configural model
-  + `rd3c3::fit_grm2_m04_base` for the base model (i.e., descriptive model)
+  + `webrd3c3::fit_grm2` for the pooled model
+  + `webrd3c3::fit_grm2_m01_strict` for the strict model
+  + `webrd3c3::fit_grm2_m02_scalar` for the scalar model
+  + `webrd3c3::fit_grm2_m03_configural` for the configural model
+  + `webrd3c3::fit_grm2_m04_base` for the base model (i.e., descriptive model)
 
 
 In the following section we include code (*folded*) to produce the invariance model fit indexes table (see Table 1).
@@ -97,7 +97,7 @@ In the following section we include code (*folded*) to produce the invariance mo
 # scale id
 # -----------------------------------------------
 
-rd3c3::silent(library(dplyr))
+webrd3c3::silent(library(dplyr))
 
 # -----------------------------------------------
 # scale id
@@ -147,8 +147,8 @@ grp_centered <- 'CHL'
 # pooled
 # -----------------------------------------------
 
-inv_0 <- rd3c3::silent(
-             rd3c3::fit_grm2(
+inv_0 <- webrd3c3::silent(
+             webrd3c3::fit_grm2(
            data = data_responses,
            scale_num  = scale_id,
              scale_info = scales_data
@@ -159,8 +159,8 @@ inv_0 <- rd3c3::silent(
 # strict
 # -----------------------------------------------
 
-inv_1 <- rd3c3::silent(
-           rd3c3::fit_grm2_m01_strict(
+inv_1 <- webrd3c3::silent(
+           webrd3c3::fit_grm2_m01_strict(
            data = data_responses, 
            scale_num = scale_id, 
            scale_info = scales_data,
@@ -174,8 +174,8 @@ inv_1 <- rd3c3::silent(
 # scalar
 # -----------------------------------------------
 
-inv_2 <- rd3c3::silent(
-           rd3c3::fit_grm2_m02_scalar(
+inv_2 <- webrd3c3::silent(
+           webrd3c3::fit_grm2_m02_scalar(
            data = data_responses, 
            scale_num = scale_id, 
            scale_info = scales_data,
@@ -189,8 +189,8 @@ inv_2 <- rd3c3::silent(
 # configural
 # -----------------------------------------------
 
-inv_3 <- rd3c3::silent(
-           rd3c3::fit_grm2_m03_config(
+inv_3 <- webrd3c3::silent(
+           webrd3c3::fit_grm2_m03_config(
            data = data_responses, 
            scale_num = scale_id, 
            scale_info = scales_data,
@@ -204,8 +204,8 @@ inv_3 <- rd3c3::silent(
 # base
 # -----------------------------------------------
 
-inv_4 <- rd3c3::silent(
-           rd3c3::fit_grm2_m04_base(
+inv_4 <- webrd3c3::silent(
+           webrd3c3::fit_grm2_m04_base(
            data = data_responses, 
            scale_num = scale_id, 
            scale_info = scales_data,
@@ -219,11 +219,11 @@ inv_4 <- rd3c3::silent(
 # retrieve fit indexes per model
 # -----------------------------------------------
 
-fit_0 <- rd3c3::get_inv_fit(inv_0, model_name = 'pooled')
-fit_1 <- rd3c3::get_inv_fit(inv_1, model_name = 'strict')
-fit_2 <- rd3c3::get_inv_fit(inv_2, model_name = 'scalar')
-fit_3 <- rd3c3::get_inv_fit(inv_3, model_name = 'config')
-fit_4 <- rd3c3::get_inv_fit(inv_4, model_name = 'base')
+fit_0 <- webrd3c3::get_inv_fit(inv_0, model_name = 'pooled')
+fit_1 <- webrd3c3::get_inv_fit(inv_1, model_name = 'strict')
+fit_2 <- webrd3c3::get_inv_fit(inv_2, model_name = 'scalar')
+fit_3 <- webrd3c3::get_inv_fit(inv_3, model_name = 'config')
+fit_4 <- webrd3c3::get_inv_fit(inv_4, model_name = 'base')
 
 # -----------------------------------------------
 # general table
@@ -261,7 +261,7 @@ The following code (*folded*) is using as inputs:
 - data_responses [`data_ex1.rds`](https://www.dropbox.com/scl/fi/aivrd2rw2lhw5o7ly06jn/data_ex1.rds?rlkey=3clglj3fdlh5o6myv3q8et9xz&dl=1)
 - scale_info = [`guideline_scale_info_example.xlsx`](https://www.dropbox.com/scl/fi/ey0z7zpdyhuxcutedyz73/guideline_scale_info_example.xlsx?rlkey=75hh3l7o56vb0njo3eurxxhzm&dl=1)
 - scale_id = 1
-- and is using the function `rd3c3::fit_grm2_align_wlsmv()` to run an alignment method analysis
+- and is using the function `webrd3c3::fit_grm2_align_wlsmv()` to run an alignment method analysis
 
 
 ```{r, echo = TRUE, eval = TRUE, warning=FALSE, message = FALSE}
@@ -275,7 +275,7 @@ The following code (*folded*) is using as inputs:
 # scale id
 # -----------------------------------------------
 
-rd3c3::silent(library(dplyr))
+webrd3c3::silent(library(dplyr))
 
 # -----------------------------------------------
 # scale id
@@ -320,8 +320,8 @@ mutate(grp_name = paste0(COUNTRY))
 # -----------------------------------------------
 
 
-fitted_align <- rd3c3::silent(
-rd3c3::fit_grm2_align_wlsmv(
+fitted_align <- webrd3c3::silent(
+webrd3c3::fit_grm2_align_wlsmv(
 data = data_responses, 
 scale_num = scale_id, 
 scale_info = scales_data)
